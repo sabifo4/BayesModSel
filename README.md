@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1348066749.svg)](https://doi.org/10.5281/zenodo.22131885)
+
 # Testing contentious diversification models using a Bayesian model selection approach
 
 ## What will you find in this repository?
