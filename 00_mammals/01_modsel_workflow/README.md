@@ -133,7 +133,7 @@ mkdir -p pipelines_MCMCtree/$i/
 done
 ```
 
-We have generated a template bash script, [`pipeline_MCMCtree_template.sh`](scripts/pipeline_MCMCtree_template.sh) with flags that will be replaced when running the bash script [`generate_job_MCMCtree.sh`](scripts/generate_job_MCMCtree.sh). These can then be transferred to the cluster (e.g., `rsync`), where they will be submitted. E.g.:
+We have generated a template bash script, [`pipeline_MCMCtree_template.sh`](01_MCMCtree/scripts/pipeline_MCMCtree_template.sh) with flags that will be replaced when running the bash script [`generate_job_MCMCtree.sh`](01_MCMCtree/scripts/generate_job_MCMCtree.sh). These can then be transferred to the cluster (e.g., `rsync`), where they will be submitted. E.g.:
 
 ```sh
 # Run from `01_MCMCtree`

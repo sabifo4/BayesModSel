@@ -6,7 +6,7 @@ We already have the calibrated tree files and the alignment file but, unfortunat
 
 Before running `MCMCtree`, we need to calculate the branch lengths, the gradient, and the Hessian required to approximate the likelihood calculation by `MCMCtree` ([dos Reis and Yang, 2011](https://academic.oup.com/mbe/article/28/7/2161/1051613)).
 
-A [template control file](control_files/prepcodeml.ctl) with the settings used by [dos Reis et al. (2015)](https://doi.org/10.1016/j.cub.2015.09.066) and [the file with the rate matrix](control_files/lg.dat) have been saved in the [`control_files`](control_files) directory. Note that some of the options in the control file have flags that we will replace when running our in-house pipelines with the correct paths to the input files.
+A [template control file](00_CODEML/control_files/prepcodeml.ctl) with the settings used by [dos Reis et al. (2015)](https://doi.org/10.1016/j.cub.2015.09.066) and [the file with the rate matrix](00_CODEML/control_files/lg.dat) have been saved in the [`control_files`](00_CODEML/control_files) directory. Note that some of the options in the control file have flags that we will replace when running our in-house pipelines with the correct paths to the input files.
 
 ### Set up the file structure
 
@@ -52,7 +52,7 @@ mkdir -p trees/{uncalibrated,calibrated}
 mkdir -p trees/calibrated/{dRetal15pUhb,BM23pUhb}
 ```
 
-Once the file structure is created, we can now populate it with the input files: alignment, tree, and control files. We will also add the [`lg.dat` file](control_files/lg.dat), which has the matrix to enable the LG protein substitution model ([Le and Gascuel, 2008](https://academic.oup.com/mbe/article/25/7/1307/1041491)):
+Once the file structure is created, we can now populate it with the input files: alignment, tree, and control files. We will also add the [`lg.dat` file](00_CODEML/control_files/lg.dat), which has the matrix to enable the LG protein substitution model ([Le and Gascuel, 2008](https://academic.oup.com/mbe/article/25/7/1307/1041491)):
 
 ```sh
 # Run from `00_CODEML/HPC/modsel_animals_b128`
@@ -75,7 +75,7 @@ rsync -avz --copy-links modsel_animals_b128 <uname>@<server>:<path_to_main_wd>
 
 Now, we need to generate other input files to estimate the branch lengths, the gradient, and the Hessian: the input control files for `CODEML`.
 
-To do this in a reproducible manner, you can use the [script `generate_prepcodeml.sh`](scripts/generate_prepcodeml.sh), which you can find in the [`scripts`](scripts) directory and which you should have already transferred to the HPC. The [`generate_prepcodeml.sh` script](scripts/generate_prepcodeml.sh) needs two arguments:
+To do this in a reproducible manner, you can use the [script `generate_prepcodeml.sh`](00_CODEML/scripts/generate_prepcodeml.sh), which you can find in the [`scripts`](00_CODEML/scripts) directory and which you should have already transferred to the HPC. The [`generate_prepcodeml.sh` script](00_CODEML/scripts/generate_prepcodeml.sh) needs two arguments:
 
 * Argument 1: integer. If `1`, you will enable `model = 2` (empirical model) and, if `2`, you will enable `model = 3` (empirical+F model). Given that we want the latter, we will then type `1`.
 * Argument 2: integer. Number of the directory that will be created to host all the input and output files when running `CODEML`, choose from `1` to `n`, being `n` the maximum number of analyses you are running. In this case, we will have two alignments (two alignment block or partitions) and we are running `CODEML` under one AA substitution model, and so we will run this script in a loop during which the second argument will be `1` and then `2`.
@@ -175,7 +175,7 @@ Note that, when we ran the commands above, we were not interested in running `CO
 Once all `tmp000*` files are generated for all alignments, we need to make sure that the following options have been enabled:
 
 1. The (absolute or relative) path to the `lg.dat` file with the relevant LG matrix should be the argument of variable `aaRatefile` in the `tmp000*.ctl`.
-2. Following the `Tutorial 4: Approximate likleihood with protein data`, one of the sections in the [`MCMCtree Tutorials` document](http://abacus.gene.ucl.ac.uk/software/MCMCtree.Tutorials.pdf), we set the template control file to use gamma rates among sites instead of the default model, which uses no gamma rates. As we had already defined these options in the template control file, these have been already included when we previously ran `MCMCtree` to obtain the `tmp000*.ctl` files. In other words, the tmp control file should already have (i) `fix_alpha = 0` and `alpha = 0.5` (options that will enable the search to estimate the value of alpha parameter of the Gamma distribution that is used to model rate heterogeneity across sites; the starting value is $\alpha = 0.5$ as specified in the settings) and (ii) `ncatG = 4` (option that sets the number of categories required to discretise the afprementined Gamma distribution; a total of 4). We can double check everything to make sure we have made no mistake.
+2. Following the `Tutorial 4: Approximate likleihood with protein data`, one of the sections in the [`MCMCtree Tutorials` document](https://github.com/abacus-gene/paml/blob/master/doc/MCMCtree.Tutorials.pdf), we set the template control file to use gamma rates among sites instead of the default model, which uses no gamma rates. As we had already defined these options in the template control file, these have been already included when we previously ran `MCMCtree` to obtain the `tmp000*.ctl` files. In other words, the tmp control file should already have (i) `fix_alpha = 0` and `alpha = 0.5` (options that will enable the search to estimate the value of alpha parameter of the Gamma distribution that is used to model rate heterogeneity across sites; the starting value is $\alpha = 0.5$ as specified in the settings) and (ii) `ncatG = 4` (option that sets the number of categories required to discretise the afprementined Gamma distribution; a total of 4). We can double check everything to make sure we have made no mistake.
 3. In addition, we need to make sure that option `method = 1` is enabled, which will speed up the computation of the branch lengths, gradient, and Hessian:
 
 ```sh
@@ -263,15 +263,15 @@ rsync -avz --copy-links <uname>@<server>:<path_to_main_wd>/modsel_animals_b128 .
 cp modsel_animals_b128/Hessian/in.BV ../
 ```
 
-Now, we can now proceed to run our Bayesian model selection analysis with `mcmc3r` and `MCMCtree`! If you need to refresh the concepts of Bayes factors, please read the [**Introduction to Bayes factor that we wrote for the first example of this study**](../../00_mammals/01_PAML/README.md#introduction-to-bayes-factors).
+Now, we can now proceed to run our Bayesian model selection analysis with `mcmc3r` and `MCMCtree`! If you need to refresh the concepts of Bayes factors, please read the [**Introduction to Bayes factor that we wrote for the first example of this study**](../../00_mammals/01_modsel_workflow/README.md#introduction-to-bayes-factors).
 
 ## 2. Run `mcmc3r` to select $\beta$ values
 
-We are going to use the R package `mcmc3r` ([dos Reis et al. (2018)](https://academic.oup.com/sysbio/article/67/4/594/4802240?login=false)) to (i) generate the file architecture needed to run `MCMCtree` so it can collect samples from the various power posteriors, (ii) obtain the $\beta$ values according to the method described by [Xie et al. (2011)](https://pubmed.ncbi.nlm.nih.gov/21187451/), and (iii) estimate the marginal likelihood and the Bayes factors once `MCMCtree` has finished. In this section, we will focus on the first two analyses.
+We are going to use the R package `mcmc3r` ([dos Reis et al. 2018](https://academic.oup.com/sysbio/article/67/4/594/4802240?login=false)) to (i) generate the file architecture needed to run `MCMCtree` so it can collect samples from the various power posteriors, (ii) obtain the $\beta$ values according to the method described by [Xie et al. (2011)](https://pubmed.ncbi.nlm.nih.gov/21187451/), and (iii) estimate the marginal likelihood and the Bayes factors once `MCMCtree` has finished. In this section, we will focus on the first two analyses.
 
 We will use the `mcmc3r` function `mcmc3r::make.beta` to generate the $\beta$ values required to enable `MCMCtree` to sample from the corresponding power posterior. We have decided to summarise the samples collected across $k=128$ power posteriors to approximate the marginal likelihood (i.e., $\beta=0$ will collect samples from the prior, $\beta=1$ from the posterior, and then we will have 126 additional power posteriors with $\beta$ larger than 0 and smaller than 1 collecting samples from target distributions so that a path is traced from the prior to the posterior). Once the $\beta$ values are calculated, we will update the `MCMCtree` control files that will execute the various power posteriors so that these beta values are included. Note that we have decided to run the analyses both under the ILN and the GBM relaxed-clock models.
 
-Once you run lines 1-55 (at the time of writing) in [our in-house R script](01_mcmc3r/scripts/Generate_BFs_inp.R), you should see the following new directories created under [`01_PAML/00_mcmc3r`](00_mcmc3r):
+Once you run lines 1-55 (at the time of writing) in [our in-house R script](01_mcmc3r/scripts/Generate_BFs_inp.R), you should see the following new directories created under [`01_mcmc3r`](01_mcmc3r):
 
 ```text
 01_mcmc3r
