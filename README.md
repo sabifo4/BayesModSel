@@ -96,4 +96,4 @@ If you find any **technical issues** or any **formatting problems** in this repo
 
 If you have any **other questions** not related with technical or formatting problems or you would like to **discuss our study**...
 
-* ... please contact [@sabifo4](https://github.com/sabifo4/), the developer and manager of this repository, <a href="mailto://sandra.ac93@gmail.com">via e-mail</a>.
+* ... please contact [@sabifo4](https://github.com/sabifo4/), the developer and manager of this repository, <a href="mailto:sandra.ac93@gmail.com">via e-mail</a>.
