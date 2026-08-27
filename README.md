@@ -80,7 +80,7 @@ Happy reproducible timetree inference! :smile:
 
 ## Data reproducibility
 
-The step-by-step guidelines you shall find in this repository will help you reproduce our analyses! Nevertheless, there are some large files that we have been unable to commit to this repository due to size limit. Instead, you shall find them in our [FigShare archive](https://figshare.com/s/badcc59a192fa4fd0722).
+The step-by-step guidelines you shall find in this repository will help you reproduce our analyses! Nevertheless, there are some large files that we have been unable to commit to this repository due to size limit. Instead, you shall find them in our [FigShare archive](https://doi.org/10.6084/m9.figshare.32033958).
 
 If you are re-running our analyses, please download the relevant files so that you can compare them to your output files. In addition, some of the large files may be required to generate some of the figures and tables included in our manuscript. If you also want to reproduce, please make sure that you save them in the directory indicated in the R script or modify such path to where you have now saved them.
 
@@ -89,6 +89,7 @@ If you are re-running our analyses, please download the relevant files so that y
 If you use our protocol to run a Bayesian model selection analysis, please **cite**...
 
 * ... our study: [Álvarez-Carretero et al. (2026). Mol Biol Evol msag211](https://doi.org/10.1093/molbev/msag211).
+* ... this repository (archived on Zenodo): https://doi.org/10.5281/zenodo.22131885.
 * ... the `mcmc3r` R package: [dos Reis et al. (2018). Syst Biol 67:594-614](https://doi.org/10.1093/sysbio/syy001).
 * ... the `PAML` package: [Yang (2007). Mol Biol Evol 24:1586–1591](https://doi.org/10.1093/molbev/msm088).
 
