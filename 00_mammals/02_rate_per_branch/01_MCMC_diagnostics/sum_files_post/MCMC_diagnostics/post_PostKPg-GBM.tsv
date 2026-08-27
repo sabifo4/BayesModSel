@@ -1,0 +1,14 @@
+post_PostKPg-GBM
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	100005
+tail-ESS_med	571
+tail-ESS_min	57
+tail-ESS_max	19141
+bulk-ESS_med	204
+bulk-ESS_min	22
+bulk-ESS_max	19980
+minRhat	1.00018949196073
+maxRhat	1.20137627228738
+total_samples	100005

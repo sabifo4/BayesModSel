@@ -1,0 +1,14 @@
+prior_PostKPg-NODAT-ILN
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	120006
+tail-ESS_med	57913
+tail-ESS_min	42092
+tail-ESS_max	59897
+bulk-ESS_med	58560
+bulk-ESS_min	52574
+bulk-ESS_max	60649
+minRhat	0.999969133458888
+maxRhat	1.00013662335589
+total_samples	120006

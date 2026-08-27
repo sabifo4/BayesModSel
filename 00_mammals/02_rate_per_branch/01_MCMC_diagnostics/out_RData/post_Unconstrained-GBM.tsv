@@ -1,0 +1,14 @@
+post_Unconstrained-GBM
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	80004
+tail-ESS_med	580
+tail-ESS_min	82
+tail-ESS_max	4344
+bulk-ESS_med	209
+bulk-ESS_min	9
+bulk-ESS_max	2660
+minRhat	1.00110467092229
+maxRhat	1.41026916114702
+total_samples	80004

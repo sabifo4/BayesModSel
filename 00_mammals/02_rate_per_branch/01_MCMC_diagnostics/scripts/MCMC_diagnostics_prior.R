@@ -1,0 +1,368 @@
+#-------------------#
+# CLEAN ENVIRONMENT #
+#-------------------#
+rm( list = ls( ) )
+
+#-----------------------------------------------#
+# LOAD PACKAGES, FUNCTIONS, AND SET ENVIRONMENT #
+#-----------------------------------------------#
+# This package lets you find automatically the path to a specific location
+# in your file structure
+# If you have not installed this package, you will need to install it. 
+# You can uncomment the following line to do this:
+#install.packages( "rstudioapi" )
+library( rstudioapi )
+scripts_dir   <- gsub( pattern = "scripts..*", replacement = "scripts/",
+                       x = getActiveDocumentContext()$path )
+setwd( scripts_dir )
+# Load the file with all the functions used throughout this script
+source( file = "../../../../src/Functions.R" )
+# Run in-house function to set home directory and output directory for ESS
+# and convergence tests
+# NOTE: This function will create a directory called `plots` and another called
+# `ESS_and_chains_convergence` inside the `analyses` directory if you have
+# not created them yet
+home_dir      <- set_homedir()$home
+outchecks_dir <- set_homedir()$ESS
+# By now, set the working directory to `home_dir`
+setwd( home_dir )
+
+#-------------------------------------------------------------#
+# DEFINE GLOBAL VARIABLES -- modify according to your dataset #
+#-------------------------------------------------------------#
+# First, we will define the global variables that match the settings in our 
+# analysis.
+
+# 1. Number of chains
+num_chains <- 6
+
+# 2. Number of divergence times that have been estimated. One trick to find
+# this out quickly is to subtract 1 to the number of species. In this case,
+# there are 72 taxa (72), so the number of internal nodes
+# is `n_taxa-=72-1=71`.
+# Another way to verify this is by opening the `mcmc.txt` file and check the
+# header. The first element after `Gen` will have the format of `t_nX`, where
+# X will be an integer (i.e., 73). Subtract two to this number 
+# (i.e., 73-2=71) and this will be your number of divergence times that are 
+# parameters of the MCMC. Please modify the number below so it fits to the 
+# dataset you are using. 
+num_divt <- 71
+
+# 3. If you set `print= 2`, then you must specify the number of branches
+# in the tree. You can calculate this by `2*num_sp-1`. In our case:
+# 2*72-1=143
+# You also need to specify the number of partitions, as there will be
+# a set of "n" branch rates for each partition
+num_brate <- 143
+num_part  <- 4
+
+# 4. Number of samples that you specified in the `MCMCtree` control file to 
+# collect. NOTE: you may have not collect them all, but do not worry!
+def_samples <- 20000
+
+# 5. Quantile percentage that you want to set By default, the variable below is 
+# set to 0.975 so the 97.5% and 2.5% quantiles (i.e., 95%CI). If you want to
+# change this, however, just modify the value.
+perc <- 0.975
+
+# 6. Load a semicolon-separated file with info about calibrated nodes. Note that
+# this file is output by script `Merge_node_labels.R`. A summary of its content
+# in case you are to generate your own input files:
+#
+# Each column needs to be separated with semicolons and an extra blank line
+# after the last row with calibration information needs to be added. If the
+# extra blank is not added, R will complain and will not load the file!
+# If you add a header, please make sure you name the column elements as 
+# `Calib;node;Prior`. If not, the R function below will deal with the header,
+# but make sure you set `head_avail = FALSE` when running `read_calib_f` 
+# function below. An example of the content of this file is given below:
+#
+# ```
+# Calib;node;Prior
+# ex_n5;5;ST(5.8300,0.0590,0.1120,109.1240)
+# ex_n7;7;B(4.1200,4.5200,0.0250,0.0250)
+#
+# ```
+#
+# The first column will have the name of the calibration/s that can help you
+# identify which node belongs to which calibration. The second column is the
+# number given to this node by`MCMCtree` (this information is automatically
+# found when you run the script `Merge_node_labels.R`, otherwise you will need
+# to keep checking the output file `node_trees.tree` to figure out which node
+# is which). The third column is the calibration used for that node in
+# `MCMCtree` format.
+# 
+# [[ NOTES ABOUT ALLOWED CALIBRATION FORMATS]]
+#
+# Soft-bound calibrations: 
+#  E.g.1: A calibration with a minimum of 0.6 and a maximum of 0.8 would with  
+#         the default tail probabilities would have the following equivalent 
+#         formats:
+#         >> B(0.6,0.8) | B(0.6,0.8,0.025,0.025)
+#  E.g.2: A calibration with a minimum of 0.6 and a maximum of 0.8 would with  
+#         the pL=0.001 and pU=0.025 would have the following format. Note that, 
+#         whenever you want to modify either pL or pU, you need to write down 
+#         the four  parameters in the format of "B(min,max,pL,pU)":
+#         >> B(0.6,0.8,0.001,0.025)
+#
+# Lower-bound calibrations: 
+#  E.g.1: A calibration with a minimum of 0.6 and the default parameters for
+#         p = 0.1, c = 1, pL = 0.025:
+#         >> L(0.6) | L(0.6,0.1,1,0.025)
+#  E.g.2: A calibration with a hard minimum at 0.6, and so pL = 1e-300. 
+#         Note that, whenever you want to modify either pL or pU, you need to  
+#         write down the four parameters in the format of "L(min,p,c,pL)":
+#         >> L(0.6,0.1,1,1e-300)
+#
+# Upper-bound calibrations: 
+#  E.g.1: A calibration with a maximum of 0.8 and the default parameters for
+#         pU = 0.025:
+#         >> U(0.8) | U(0.8,0.025)
+#  E.g.2: A calibration with a hard maximum at 0.8, and so pU = 1e-300. 
+#         Note that, if you want to modify pU, you need to write down the two
+#         parameters in the format of "U(max,pU)":
+#         >> U(0.8,1e-300)
+#
+# ST distributions: 
+#  The format accepted has four parameters: xi (location, mean root age), 
+#  omega (scale), alpha (shape), nu (df). Accepted format: 
+#  >> ST(5.8300,0.0590,0.1120,109.1240)
+#
+# SN distributions: 
+#  The format accepted has three parameters: xi (location, mean root age), 
+#  omega (scale), alpha (shape). Accepted format: 
+#  >> SN(5.8300,0.0590,0.1120)  
+#
+#
+# The next command executes the `read_calib_f` in-house function, which reads
+# your input files (semicolon-separated files). The path to this directory is 
+# what the argument `main_dir` needs. The argument `f_names` requires the name 
+# of the file/s that you have used. Argument `dat` requires the same global 
+# object that you have created at the beginning of the script.
+dat <- c( "Unconstrained-NODAT-GBM", "Unconstrained-NODAT-ILN",
+          "PostKPg-NODAT-GBM", "PostKPg-NODAT-ILN" )
+calib_nodes <- read_calib_f( main_dir = paste( home_dir, "calibs/inp_calibs/",
+                                               sep = "" ),
+                             f_names = c( "Calibnodes_Unconstrained.csv",
+                                          "Calibnodes_Unconstrained.csv",
+                                          "Calibnodes_PostKPg.csv",
+                                          "Calibnodes_PostKPg.csv" ),
+                             dat = dat, head_avail = TRUE )
+
+# 7. Number of columns in the `mcmc.txt` that are to be deleted as they do not 
+# correspond to sample values for divergence times (i.e., the entries are not 
+# names following the format `t_nX`). To figure out this number quickly, you 
+# can open the `mcmc.txt` file, read the header, and count the number of `mu*`
+# elements. Do not count the `lnL` value when looking at 
+# `mcmc.txt` files generated when sampling from the posterior -- this is 
+# automatically accounted for in the in-house R functions that you will 
+# subsequently use. E.g., you expect to see as many `mu[0-9]` as alignment
+# blocks you have in your sequence file! E.g., if you had two alignment blocks,
+# you would speciy `delcol_prior <- 2`. Please modify the value/s below 
+# (depending on having one or more datasets) according to the `mcmc.txt` file
+# generated when sampling from the prior (`delcol_prior`)
+##> NOTE: If you ran `MCMCtree` with `clock = 2` or `clock = 3` when
+##> sampling from the prior, you will also need to count the `sigma2*`
+##> columns! We ran `clock = 1` so that the analyses ran quicker, and thus
+##> we only have `mu*` columns.
+delcol_prior <- 8 # There are 4 partitions, and hence 8 columns (we ran
+                  # analyses with `clock = 2` and `clock = 3`!
+                  # mu[1-4] and sigma2[1-4]
+
+# 8. Path to the directory where the subdirectories where each chain ran for 
+# each dataset are saved In this case, we will have the path to the directory 
+# where the analyses when sampling from the prior took place (i.e., directory
+# that contains the subdirectories from `1` to `n`, where `n` is the number
+# of chains we ran).
+path_prior <- c( paste( home_dir,
+                        "../00_MCMCtree/sum_analyses/00_prior/ACetal22_NODAT_GBM/",
+                        sep = "" ),
+                 paste( home_dir,
+                        "../00_MCMCtree/sum_analyses/00_prior/ACetal22_NODAT_ILN/",
+                        sep = "" ),
+                 paste( home_dir,
+                        "../00_MCMCtree/sum_analyses/00_prior/BM23pUhb_NODAT_GBM/",
+                        sep = "" ),
+                 paste( home_dir,
+                        "../00_MCMCtree/sum_analyses/00_prior/BM23pUhb_NODAT_ILN/",
+                        sep = "" )
+)
+
+#--------------#
+# ANALYSE DATA #
+#--------------#
+# Define object names
+num_dirs      <- num_chains
+num_brate     <- num_brate
+num_part      <- num_part
+delcol        <- delcol_prior
+path          <- path_prior
+num_divt      <- num_divt
+node_calib    <- calib_nodes # One matrix for each!
+dataset       <- dat
+perc          <- perc
+def_samples   <- def_samples
+prior         <- TRUE
+out_dat       <- path_prior
+time_unit     <- 100
+out_file_pdf  <- paste( "Convergence_plot_prior_", dat, sep = "" )
+out_title_pdf <- paste( "prior_", dat, sep = "" )
+th            <- 0.1
+# Generate a list to keep all the returned objects
+sum_prior_QC          <- vector( "list", length( path_prior ) )
+names( sum_prior_QC ) <- dataset
+# Now, run the `QC_conv` function in a loop
+for( i in 1:length( dataset ) ){
+  # NOTE: Only vectors with more than one element rely on `i`
+  sum_prior_QC[[ i ]] <- QC_conv( num_dirs = num_dirs, delcol = delcol, 
+                                  path = path[i], num_divt = num_divt,
+                                  num_brate = num_brate, num_part = num_part,
+                                  # Access corresponding csv for each dataset
+                                  node_calib = node_calib[[ i ]],
+                                  dataset = dataset[i],
+                                  perc = perc, def_samples = def_samples,
+                                  prior = prior, out_dat = out_dat[i],
+                                  time_unit = time_unit, 
+                                  out_file_pdf = out_file_pdf[i],
+                                  out_title_pdf = out_title_pdf[i], 
+                                  th = th,
+                                  outchecks_dir = outchecks_dir,
+                                  brate_ESS = FALSE )
+}
+
+# Save object -- it is a very big file (~6.4Gb), so only run the commands below
+# if you have enough space!
+if( ! dir.exists( paste( home_dir, "out_RData", sep = "" ) ) ){
+  dir.create( paste( home_dir, "out_RData", sep = "" ) ) 
+}
+save( file = paste( home_dir, "out_RData/sum_prior_QC.Rdata", sep = "" ),
+      sum_prior_QC )
+
+# Print out sum stats in the script as a log
+
+## [[ Unconstrained-NODAT-GBM -- no data ]] ####
+sum_prior_QC$`Unconstrained-NODAT-GBM`$ESS_results
+# $median
+# [1] 20001
+# 
+# $min
+# [1] 20001
+# 
+# $max
+# [1] 20001
+# 
+# $num_samples_for_ESS
+# [1] 120006
+# 
+# $ESS
+# Tail-ESS Bulk-ESS
+# Med.    44544    41014
+# Min.    10892    15749
+# Max.    59489    58870
+# 
+# $minRhat
+# [1] 0.9999614
+# 
+# $maxRhat
+# [1] 1.000552
+# 
+# $total_samples
+# [1] 120006     71
+length( sum_prior_QC$`Unconstrained-NODAT-GBM`$not_conv_nodes ) # 0
+sum_prior_QC$`Unconstrained-NODAT-GBM`$num_chains # 6
+
+
+## [[ Unconstrained-NODAT-ILN -- no data ]] ####
+sum_prior_QC$`Unconstrained-NODAT-ILN`$ESS_results
+# $median
+# [1] 20001
+# 
+# $min
+# [1] 20001
+# 
+# $max
+# [1] 20001
+# 
+# $num_samples_for_ESS
+# [1] 120006
+# 
+# $ESS
+# Tail-ESS Bulk-ESS
+# Med.    58476    59040
+# Min.    41973    52531
+# Max.    60113    60501
+# 
+# $minRhat
+# [1] 0.9999576
+# 
+# $maxRhat
+# [1] 1.000154
+# 
+# $total_samples
+# [1] 120006     71
+length( sum_prior_QC$`Unconstrained-NODAT-ILN`$not_conv_nodes ) # 0
+sum_prior_QC$`Unconstrained-NODAT-ILN`$num_chains # 6
+
+
+## [[ PostKPg-NODAT-GBM -- no data ]] ####
+sum_prior_QC$`PostKPg-NODAT-GBM`$ESS_results
+# $median
+# [1] 20001
+# 
+# $min
+# [1] 20001
+# 
+# $max
+# [1] 20001
+# 
+# $num_samples_for_ESS
+# [1] 120006
+# 
+# $ESS
+# Tail-ESS Bulk-ESS
+# Med.    38499    38528
+# Min.    17895    20181
+# Max.    59957    59256
+# 
+# $minRhat
+# [1] 0.9999791
+# 
+# $maxRhat
+# [1] 1.00038
+# 
+# $total_samples
+# [1] 120006     71
+length( sum_prior_QC$`PostKPg-NODAT-GBM`$not_conv_nodes ) # 0
+sum_prior_QC$`PostKPg-NODAT-GBM`$num_chains # 6
+
+## [[ PostKPg-NODAT-ILN -- no data ]] ####
+sum_prior_QC$`PostKPg-NODAT-ILN`$ESS_results
+# $median
+# [1] 20001
+# 
+# $min
+# [1] 20001
+# 
+# $max
+# [1] 20001
+# 
+# $num_samples_for_ESS
+# [1] 120006
+# 
+# $ESS
+# Tail-ESS Bulk-ESS
+# Med.    57913    58560
+# Min.    42092    52574
+# Max.    59897    60649
+# 
+# $minRhat
+# [1] 0.9999691
+# 
+# $maxRhat
+# [1] 1.000137
+# 
+# $total_samples
+# [1] 120006     71
+length( sum_prior_QC$`PostKPg-NODAT-ILN`$not_conv_nodes ) # 0
+sum_prior_QC$`PostKPg-NODAT-ILN`$num_chains # 6
+
