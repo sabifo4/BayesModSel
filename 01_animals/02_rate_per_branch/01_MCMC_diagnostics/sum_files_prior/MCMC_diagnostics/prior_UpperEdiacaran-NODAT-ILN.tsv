@@ -1,0 +1,14 @@
+prior_UpperEdiacaran-NODAT-ILN
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	120006
+tail-ESS_med	59217
+tail-ESS_min	55100
+tail-ESS_max	59995
+bulk-ESS_med	59393
+bulk-ESS_min	56801
+bulk-ESS_max	60866
+minRhat	0.999953327140425
+maxRhat	1.00008371920495
+total_samples	120006

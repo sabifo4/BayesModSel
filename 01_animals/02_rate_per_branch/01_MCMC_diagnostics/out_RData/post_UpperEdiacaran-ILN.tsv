@@ -1,0 +1,14 @@
+post_UpperEdiacaran-ILN
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	100005
+tail-ESS_med	43847
+tail-ESS_min	6974
+tail-ESS_max	50191
+bulk-ESS_med	37610
+bulk-ESS_min	5317
+bulk-ESS_max	50160
+minRhat	0.999961698339807
+maxRhat	1.00155666007389
+total_samples	100005

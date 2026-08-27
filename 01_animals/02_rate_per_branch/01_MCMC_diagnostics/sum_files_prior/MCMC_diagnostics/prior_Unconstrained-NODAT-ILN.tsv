@@ -1,0 +1,14 @@
+prior_Unconstrained-NODAT-ILN
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	100005
+tail-ESS_med	49442
+tail-ESS_min	47405
+tail-ESS_max	50449
+bulk-ESS_med	49886
+bulk-ESS_min	47802
+bulk-ESS_max	51196
+minRhat	0.999939417958826
+maxRhat	1.0001333092151
+total_samples	100005

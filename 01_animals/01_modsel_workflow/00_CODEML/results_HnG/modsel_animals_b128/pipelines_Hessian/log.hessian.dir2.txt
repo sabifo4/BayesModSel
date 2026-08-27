@@ -1,0 +1,278 @@
+Job starts: Wed Jun 25 11:02:30 AM BST 2025
+The analyses will take place in directory /data/scratch/btx126/modsel_animals_b128/Hessian/2
+
+
+Running CODEML to calculate the Hessian and the gradient...
+
+AAML in paml version 4.9h, March 2018
+ns = 54  	ls = 14294
+Reading sequences, sequential format..
+Reading seq # 1: Acanthoscu       Reading seq # 2: Acropora_m       Reading seq # 3: Alvinella_       Reading seq # 4: Amphimedon       Reading seq # 5: Anemonia_v       Reading seq # 6: Anoplodact       Reading seq # 7: Aplysia_ca       Reading seq # 8: Brachionus       Reading seq # 9: Branchiost       Reading seq #10: Caenorhabd       Reading seq #11: Capitella_       Reading seq #12: Ciona_inte       Reading seq #13: Crassostre       Reading seq #14: Danio_reri       Reading seq #15: Daphnia_pu       Reading seq #16: Eptatretus       Reading seq #17: Euperipato       Reading seq #18: Euprymna_s       Reading seq #19: Flaccisagi       Reading seq #20: Gallus_gal       Reading seq #21: Gryllus_bi       Reading seq #22: Helobdella       Reading seq #23: Holothuria       Reading seq #24: Homo_sapie       Reading seq #25: Hydra_magn       Reading seq #26: Hydractini       Reading seq #27: Ixodes_sca       Reading seq #28: Leucoraja_       Reading seq #29: Litopenaeu       Reading seq #30: Lottia_gig       Reading seq #31: Molgula_te       Reading seq #32: Mus_muscul       Reading seq #33: Mytilus_ga       Reading seq #34: Nematostel       Reading seq #35: Onychiurus       Reading seq #36: Ornithorhy       Reading seq #37: Patiria_pe       Reading seq #38: Petromyzon       Reading seq #39: Philodina_       Reading seq #40: Pomatocero       Reading seq #41: Priapulus_       Reading seq #42: Ptychodera       Reading seq #43: Rhodnius_p       Reading seq #44: Saccogloss       Reading seq #45: Scutigera_       Reading seq #46: Spadella_c       Reading seq #47: Strongyloc       Reading seq #48: Suberites_       Reading seq #49: Symsagitti       Reading seq #50: Tribolium_       Reading seq #51: Trichoplax       Reading seq #52: Tubifex_tu       Reading seq #53: Xenopus_tr       Reading seq #54: Xenoturbel       
+Sequences read..
+
+14294 site patterns read, 15766 sites
+Counting frequencies..
+
+11448 bytes for distance
+4574080 bytes for conP
+457408 bytes for fhK
+5000000 bytes for space
+
+TREE #  1
+
+475704320 bytes for conP, adjusted
+
+1 node(s) used for scaling (Yang 2000 J Mol Evol 51:423-432):
+57
+
+ntime & nrate & np:   105     0   106
+
+np =   106
+lnL0 = -526628.870309
+
+
+Round 1a: Paras (1) (e=5)
+Iterating by ming2
+Initial: fx= 526628.870309
+x=  0.50000
+
+1 h-m-p  0.0000 0.0002 2774.2966 Y     526540.305178  0 0.0000     6 | 0/1
+2 h-m-p  1.6000 8.0000   0.0054 Y     526539.772544  0 0.7875    10
+
+0.440497         0:11
+
+Round 1b: Blengths (105, e=5)
+lnL0 =    -526539.772544
+Cycle  1: -497283.243225
+Cycle  2: -495950.296281
+Cycle  3: -495772.174135
+Cycle  4: -495724.248711
+Cycle  5: -495706.888936
+Cycle  6: -495699.821376
+Cycle  7: -495696.891809
+
+1:12
+
+
+Round 2a: Paras (1) (e=2.5)
+Iterating by ming2
+Initial: fx= 495696.891809
+x=  0.44050
+
+1 h-m-p  0.0000 0.0067 7228.5849 Y     495351.241928  0 0.0000    17 | 0/1
+2 h-m-p  1.6000 8.0000   0.0145 C     495341.594499  0 1.6000    21
+
+0.552297         1:22
+
+Round 2b: Blengths (105, e=2.5)
+lnL0 =    -495341.594499
+Cycle  1: -495322.974188
+Cycle  2: -495314.198884
+Cycle  3: -495310.888852
+Cycle  4: -495309.677952
+
+1:52
+
+
+Round 3a: Paras (1) (e=1.25)
+Iterating by ming2
+Initial: fx= 495309.677952
+x=  0.55230
+
+1 h-m-p  0.0001 0.1587 305.3168 C     495308.617621  0 0.0000    28 | 0/1
+2 h-m-p  1.6000 8.0000   0.0001 Y     495308.617238  0 1.0232    32
+
+0.559296         2:02
+
+Round 3b: Blengths (105, e=1.25)
+lnL0 =    -495308.617238
+Cycle  1: -495308.083652
+
+2:10
+
+
+Round 4a: Paras (1) (e=0.625)
+Iterating by ming2
+Initial: fx= 495308.083652
+x=  0.55930
+
+1 h-m-p  0.0019 3.7553  12.8992 --Y   495308.081699  0 0.0000    41 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 Y     495308.081699  0 1.6000    45
+
+0.559598         2:22
+
+Round 4b: Blengths (105, e=0.625)
+lnL0 =    -495308.081699
+Cycle  1: -495307.877823
+
+2:30
+
+
+Round 5a: Paras (1) (e=0.001)
+Iterating by ming2
+Initial: fx= 495307.877823
+x=  0.55960
+
+1 h-m-p  0.0039 7.8470   6.1731 ---C  495307.877378  0 0.0000    55 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 -C    495307.877378  0 0.1000    60
+
+0.559743         2:44
+
+Round 5b: Blengths (105, e=0.001)
+lnL0 =    -495307.877378
+Cycle  1: -495307.804649
+Cycle  2: -495307.779358
+Cycle  3: -495307.770685
+Cycle  4: -495307.767725
+Cycle  5: -495307.766717
+Cycle  6: -495307.766375
+
+3:28
+
+
+Round 6a: Paras (1) (e=0.00025)
+Iterating by ming2
+Initial: fx= 495307.766375
+x=  0.55974
+
+1 h-m-p  0.0029 5.8864   8.2292 --Y   495307.765580  0 0.0000    69 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 Y     495307.765580  0 0.2541    73
+
+0.559936         3:41
+
+Round 6b: Blengths (105, e=0.00025)
+lnL0 =    -495307.765580
+Cycle  1: -495307.765420
+
+3:48
+
+
+Round 7a: Paras (1) (e=6.25e-05)
+Iterating by ming2
+Initial: fx= 495307.765420
+x=  0.55994
+
+1 h-m-p  0.0040 8.0000   0.2190 ---C  495307.765419  0 0.0000    83
+
+0.559941         3:58
+
+Round 7b: Blengths (105, e=6.25e-05)
+lnL0 =    -495307.765419
+Cycle  1: -495307.765358
+
+4:06
+
+
+Round 8a: Paras (1) (e=1.5625e-05)
+Iterating by ming2
+Initial: fx= 495307.765358
+x=  0.55994
+
+1 h-m-p  0.0040 8.0000   0.0944 ---C  495307.765358  0 0.0000    93
+
+0.559943         4:15
+
+Round 8b: Blengths (105, e=1.5625e-05)
+lnL0 =    -495307.765358
+Cycle  1: -495307.765336
+Cycle  2: -495307.765328
+
+4:30
+
+
+Round 9a: Paras (1) (e=3.90625e-06)
+Iterating by ming2
+Initial: fx= 495307.765328
+x=  0.55994
+
+1 h-m-p  0.0040 8.0000   0.0907 ---C  495307.765328  0 0.0000   103 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 Y     495307.765328  0 1.6000   108
+
+0.559946         4:45
+
+Round 9b: Blengths (105, e=3.90625e-06)
+lnL0 =    -495307.765328
+Cycle  1: -495307.765326
+
+4:53
+
+
+Round 10a: Paras (1) (e=1e-06)
+Iterating by ming2
+Initial: fx= 495307.765326
+x=  0.55995
+
+1 h-m-p  0.0040 8.0000   0.0063 ----Y 495307.765326  0 0.0000   119 | 0/1
+2 h-m-p  1.2895 8.0000   0.0000 Y     495307.765326  0 0.3224   124
+
+0.559946         5:09
+
+Round 10b: Blengths (105, e=1e-06)
+lnL0 =    -495307.765326
+Cycle  1: -495307.765325
+
+5:19
+
+
+Round 11a: Paras (1) (e=1e-06)
+Iterating by ming2
+Initial: fx= 495307.765325
+x=  0.55995
+
+1 h-m-p  0.0040 8.0000   0.0183 --Y   495307.765325  0 0.0000   133 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 C     495307.765325  0 1.6829   138
+
+0.559946         5:33
+
+Round 11b: Blengths (105, e=1e-06)
+lnL0 =    -495307.765325
+Cycle  1: -495307.765324
+
+5:44
+
+6 rounds of small improvement.
+
+Round 12a: Paras (1) (e=1e-06)
+Iterating by ming2
+Initial: fx= 495307.765324
+x=  0.55995
+
+1 h-m-p  0.0040 8.0000   0.0142 ----Y 495307.765324  0 0.0000   149 | 0/1
+2 h-m-p  1.6000 8.0000   0.0000 Y     495307.765324  0 1.6000   154
+
+0.559946         5:59
+
+Round 12b: Blengths (105, e=1e-06)
+lnL0 =    -495307.765324
+Cycle  1: -495307.765324
+
+6:24
+
+7 rounds of small improvement.
+
+Round 13a: Paras (1) (e=1e-06)
+Iterating by ming2
+Initial: fx= 495307.765324
+x=  0.55995
+
+1 h-m-p  0.0040 8.0000   0.0026 --Y   495307.765324  0 0.0001   163 | 0/1
+2 h-m-p  1.2727 8.0000   0.0000 C     495307.765324  0 0.4792   168
+
+0.559946         6:37
+
+Round 13b: Blengths (105, e=1e-06)
+lnL0 =    -495307.765324
+Cycle  1: -495307.765324
+
+7:15
+
+lnL  = -495307.765324
+Out..
+lnL  = -495307.765324
+171 lfun, 0 eigenQcodon, 105724 P(t)
+Calculating SE's
+
+Time used: 10:56
+
+CODEML FINISHED!
+

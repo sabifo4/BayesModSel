@@ -1,0 +1,14 @@
+post_Unconstrained-ILN
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	120006
+tail-ESS_med	55375
+tail-ESS_min	27911
+tail-ESS_max	60273
+bulk-ESS_med	48935
+bulk-ESS_min	13544
+bulk-ESS_max	60199
+minRhat	0.99996311560187
+maxRhat	1.00041193283136
+total_samples	120006

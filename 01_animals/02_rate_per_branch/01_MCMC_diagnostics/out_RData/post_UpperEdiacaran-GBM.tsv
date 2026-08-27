@@ -1,0 +1,14 @@
+post_UpperEdiacaran-GBM
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	80004
+tail-ESS_med	34844
+tail-ESS_min	2959
+tail-ESS_max	39848
+bulk-ESS_med	31812
+bulk-ESS_min	3749
+bulk-ESS_max	40201
+minRhat	0.999953387544449
+maxRhat	1.00103084630469
+total_samples	80004

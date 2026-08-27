@@ -1,0 +1,14 @@
+prior_Unconstrained-NODAT-GBM
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	80004
+tail-ESS_med	39091
+tail-ESS_min	33173
+tail-ESS_max	40355
+bulk-ESS_med	39089
+bulk-ESS_min	36090
+bulk-ESS_max	40604
+minRhat	0.999944575408526
+maxRhat	1.00027999338654
+total_samples	80004

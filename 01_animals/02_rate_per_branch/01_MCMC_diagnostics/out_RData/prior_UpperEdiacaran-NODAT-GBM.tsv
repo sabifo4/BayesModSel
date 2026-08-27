@@ -1,0 +1,14 @@
+prior_UpperEdiacaran-NODAT-GBM
+median	20001
+min	20001
+max	20001
+num_samples_for_ESS	40002
+tail-ESS_med	19377
+tail-ESS_min	11584
+tail-ESS_max	20032
+bulk-ESS_med	19461
+bulk-ESS_min	17853
+bulk-ESS_max	20260
+minRhat	0.999910542060677
+maxRhat	1.00042872920649
+total_samples	40002
