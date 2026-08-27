@@ -86,7 +86,7 @@ If you are re-running our analyses, please download the relevant files so that y
 
 If you use our protocol to run a Bayesian model selection analysis, please **cite**...
 
-* ... our study: [Álvarez-Carretero et al. (2026). Mol Biol Evol.msag211](https://doi.org/10.1093/molbev/msag211).
+* ... our study: [Álvarez-Carretero et al. (2026). Mol Biol Evol msag211](https://doi.org/10.1093/molbev/msag211).
 * ... the `mcmc3r` R package: [dos Reis et al. (2018). Syst Biol 67:594-614](https://doi.org/10.1093/sysbio/syy001).
 * ... the `PAML` package: [Yang (2007). Mol Biol Evol 24:1586–1591](https://doi.org/10.1093/molbev/msm088).
 
